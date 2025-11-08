@@ -1,26 +1,535 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #000000;
 }
+
+/* Resume Layout Styles */
+.resume-page-wrapper {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.resume-container {
+  max-width: 850px;
+  background: white;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  padding: 16px;
+}
+
+.resume-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.resume-header-left {
+  flex: 1;
+}
+
+.name-field {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+  font-family: 'Rubik', sans-serif;
+  line-height: 1.2;
+}
+
+.title-field {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.contact-info-single-line {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.contact-info-two-column {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.contact-column {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  flex: none;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 0px;
+  white-space: nowrap;
+}
+
+.contact-icon {
+  width: 14px;
+  height: 14px;
+  color: rgb(0, 140, 255);
+  flex-shrink: 0;
+  margin-right: 6px;
+}
+
+.contact-text {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  color: #000000;
+}
+
+.contact-link {
+  color: #000000;
+  text-decoration: none;
+}
+
+.contact-link:hover {
+  text-decoration: underline;
+}
+
+.photo-container {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(0, 0, 0);
+  font-weight: 500;
+  font-size: 18px;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  align-self: center;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.resume-columns {
+  display: grid;
+  grid-template-columns: 1fr 38%;
+  column-gap: 15px;
+  margin-top: 10px;
+}
+
+.section-container {
+  margin-bottom: 14px;
+}
+
+.section-header {
+  padding: 3px 8px 0px;
+}
+
+.section-title {
+  font-weight: 600;
+  font-family: 'Rubik', Arial, Helvetica, sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: 16px;
+  line-height: 18px;
+  border-bottom: 2px solid rgb(0, 0, 0);
+  padding-bottom: 3px;
+}
+
+.section-content {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.resume-item {
+  padding: 3px 8px;
+}
+
+.item-separator {
+  margin: 0px 8px;
+  position: relative;
+  top: 1px;
+  height: 1px;
+  background-color: #e0e0e0;
+}
+
+.job-title {
+  font-family: 'Rubik', Arial, Helvetica, sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+}
+
+.company-name {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  color: rgb(0, 140, 255);
+  font-size: 12px;
+  line-height: 14px;
+  margin-top: 1px;
+}
+
+.job-date {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 13px;
+  color: #666;
+  margin-top: 1px;
+}
+
+.job-description {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 13px;
+  margin-top: 2px;
+}
+
+.bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 0;
+}
+
+.bullet-item {
+  display: flex;
+  align-items: flex-start;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 13px;
+  margin-bottom: 2px;
+}
+
+.bullet-dot {
+  margin-right: 6px;
+  color: #000;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.summary-text {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: left;
+  padding: 4px 8px;
+}
+
+.strength-item {
+  padding: 4px 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.strength-icon {
+  width: 16px;
+  height: 16px;
+  color: rgb(0, 140, 255);
+  flex-shrink: 0;
+  margin-top: 2px;
+  margin-right: 8px;
+}
+
+.strength-content {
+  flex: 1;
+}
+
+.strength-title {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+}
+
+.strength-description {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  margin-top: 3px;
+  color: #333;
+}
+
+.skills-item {
+  padding: 4px 8px;
+}
+
+.skill-category {
+  margin-bottom: 8px;
+}
+
+.skill-category-title {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.skill-list {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  color: #333;
+}
+
+.education-item {
+  padding: 4px 8px;
+}
+
+.education-degree {
+  font-family: 'Rubik', Arial, Helvetica, sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+}
+
+.education-school {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  color: rgb(0, 140, 255);
+  font-size: 12px;
+  line-height: 14px;
+  margin-top: 2px;
+}
+
+.education-date {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 13px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.project-item {
+  padding: 4px 10px;
+}
+
+.project-name {
+  font-family: 'Rubik', Arial, Helvetica, sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.project-description {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 15px;
+  color: #333;
+}
+
+/* Download Button Styles */
+.download-button-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.download-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+  min-width: 150px;
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.docx-btn {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+}
+
+.docx-btn:hover {
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.6);
+}
+
+/* Print Styles */
+@media print {
+  /* Hide download button */
+  .download-button-container {
+    display: none !important;
+  }
+  
+  /* Remove all margins and padding for clean print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Override browser default print styles */
+  html {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  html, body {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    overflow: visible !important;
+  }
+  
+  .resume-page-wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: auto !important;
+    background: white !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+  
+  .resume-container {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 12px !important;
+    box-shadow: none !important;
+  }
+  
+  .resume-columns {
+    column-gap: 8px;
+    width: 100% !important;
+  }
+  
+  .section-container {
+    break-inside: avoid;
+    margin-bottom: 6px;
+  }
+  
+  .resume-item {
+    break-inside: avoid;
+  }
+  
+  .item-separator {
+    margin: 2px 10px;
+  }
+  
+  /* Remove scrollbars */
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
+  
+  /* Preserve links in print */
+  a {
+    color: #0066cc !important;
+    text-decoration: underline !important;
+  }
+  
+  /* Show URLs after links for print - but only for contact links */
+  .contact-link[href]:after {
+    content: "";
+  }
+  
+  /* Make contact links more visible in print */
+  .contact-link {
+    color: #0066cc !important;
+    text-decoration: underline !important;
+    font-weight: 500 !important;
+  }
+  
+  /* Don't show URL for relative links or mailto */
+  a[href^="#"]:after,
+  a[href^="mailto:"]:after {
+    content: "";
+  }
+  
+  /* Ensure no page breaks in critical sections */
+  .resume-header {
+    break-inside: avoid;
+  }
+  
+  .photo-container {
+    break-inside: avoid;
+  }
+}
+
+/* Page setup for print - Remove headers and footers */
+@page {
+  margin: 0 0.5in;
+  size: A4;
+  /* Remove all default browser headers and footers */
+  @top-left { content: ""; }
+  @top-center { content: ""; }
+  @top-right { content: ""; }
+  @bottom-left { content: ""; }
+  @bottom-center { content: ""; }
+  @bottom-right { content: ""; }
+}
+
+/* Additional print cleanup */
+@media print {
+  /* Force remove any potential headers/footers */
+  @page :first {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  @page :left {
+    margin-left: 0;
+  }
+  
+  @page :right {
+    margin-right: 0;
+  }
+}
+
+
