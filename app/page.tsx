@@ -96,6 +96,12 @@ export default function Home() {
               <p>This resume is optimized for desktop viewing. Choose an option:</p>
               <div className="mobile-popup-buttons">
                 <button
+                  onClick={() => setShowMobilePopup(false)}
+                  className="mobile-popup-btn view-anyway-btn"
+                >
+                  View Anyway
+                </button>
+                <button
                   onClick={() => {
                     // Store original title
                     const originalTitle = document.title;
@@ -137,12 +143,7 @@ export default function Home() {
                 >
                   📄 Download PDF
                 </button>
-                <button
-                  onClick={() => setShowMobilePopup(false)}
-                  className="mobile-popup-btn view-anyway-btn"
-                >
-                  View Anyway
-                </button>
+                
               </div>
               <button
                 onClick={() => setShowMobilePopup(false)}

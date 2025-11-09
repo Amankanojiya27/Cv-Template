@@ -709,11 +709,11 @@ body {
 
 .mobile-popup-close {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 20px;
   color: #999;
   cursor: pointer;
   width: 30px;
@@ -721,8 +721,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
   transition: all 0.2s ease;
+  border-radius: 50%;
+  border: 1px solid #999;
+  line-height: 1;
 }
 
 .mobile-popup-close:hover {
