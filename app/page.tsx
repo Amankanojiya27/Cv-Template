@@ -1,12 +1,31 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [showMobilePopup, setShowMobilePopup] = useState(false);
+
   useEffect(() => {
     // Set custom document title
     document.title = "Aman Kanojiya - Resume";
+    
+    // Check if screen is small and show popup
+    const checkScreenSize = () => {
+      if (window.innerWidth <= 320) {
+        setShowMobilePopup(true);
+      }
+    };
+    
+    // Check on initial load
+    checkScreenSize();
+    
+    // Check on window resize
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => {
+      window.removeEventListener('resize', checkScreenSize);
+    };
   }, []);
 
 
@@ -67,6 +86,74 @@ export default function Home() {
 
 
       </div>
+
+      {/* Mobile Popup */}
+      {showMobilePopup && (
+        <div className="mobile-popup-overlay">
+          <div className="mobile-popup">
+            <div className="mobile-popup-content">
+              <h3>Better Experience Available!</h3>
+              <p>This resume is optimized for desktop viewing. Choose an option:</p>
+              <div className="mobile-popup-buttons">
+                <button
+                  onClick={() => {
+                    // Store original title
+                    const originalTitle = document.title;
+                    document.title = "";
+                    document.body.style.overflow = "hidden";
+                    document.documentElement.style.overflow = "hidden";
+
+                    const metaNoHeader = document.createElement("meta");
+                    metaNoHeader.name = "print-no-header";
+                    metaNoHeader.content = "true";
+                    document.head.appendChild(metaNoHeader);
+
+                    const metaNoFooter = document.createElement("meta");
+                    metaNoFooter.name = "print-no-footer";
+                    metaNoFooter.content = "true";
+                    document.head.appendChild(metaNoFooter);
+
+                    try {
+                      window.print();
+                    } catch {
+                      window.print();
+                    }
+
+                    setTimeout(() => {
+                      document.title = originalTitle;
+                      document.body.style.overflow = "auto";
+                      document.documentElement.style.overflow = "auto";
+                      if (metaNoHeader.parentNode) {
+                        metaNoHeader.parentNode.removeChild(metaNoHeader);
+                      }
+                      if (metaNoFooter.parentNode) {
+                        metaNoFooter.parentNode.removeChild(metaNoFooter);
+                      }
+                    }, 100);
+                    
+                    setShowMobilePopup(false);
+                  }}
+                  className="mobile-popup-btn download-btn-mobile"
+                >
+                  📄 Download PDF
+                </button>
+                <button
+                  onClick={() => setShowMobilePopup(false)}
+                  className="mobile-popup-btn view-anyway-btn"
+                >
+                  View Anyway
+                </button>
+              </div>
+              <button
+                onClick={() => setShowMobilePopup(false)}
+                className="mobile-popup-close"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-5xl mx-auto bg-white resume-container">
         {/* Header Section */}
