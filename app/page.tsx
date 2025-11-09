@@ -175,10 +175,12 @@ export default function Home() {
               </div>
               <div className="section-content">
                 <div className="resume-item">
-                  <div className="company-name ">Asha Tech (AshaLearnlogy)</div>
-                  <div className="job-title">Full-Stack Developer - Full Time </div>
-                  <div className="job-date">feb 2025 - Present</div>
-                  
+                  <div className="company-name">Asha Tech (AshaLearnlogy)</div>
+                  <div className="job-title">Full-Stack Developer - Full Time</div>
+                  <div className="job-date">Feb 2025 - Present</div>
+                  <div className="job-description">
+                    Successfully completed 6-month internship and transitioned to full-time Full-Stack Developer.
+                  </div>
                 </div>
               </div>
             </div>
@@ -192,8 +194,21 @@ export default function Home() {
                 {/* Job 1 */}
                 <div className="resume-item">
                   <div className="job-title">worked as - Full-Stack Developer</div>
-                  <div className="company-name">
-                    SoWhat Shopify E-commerce Platform
+                  <div className="company-name-with-link">
+                    <div className="company-name">
+                      SoWhot - Shopify E-commerce Platform
+                    </div>
+                    <div className="project-link-inline">
+                      <a
+                        href="https://sowhot.in"
+                        className="contact-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Visit SoWhat Website"
+                      >
+                        🔗 https://sowhot.in
+                      </a>
+                    </div>
                   </div>
                   <div className="job-date">Aug 2025 - Oct 2025</div>
                   <div className="job-description">
@@ -237,8 +252,30 @@ export default function Home() {
                 {/* Job 2 */}
                 <div className="resume-item">
                   <div className="job-title">worked as - Full-Stack Developer</div>
-                  <div className="company-name">
-                    TGES Travel & Transport Management
+                  <div className="company-name-with-link">
+                    <div className="company-name">
+                      TGES Travel & Transport Management
+                    </div>
+                    <div className="project-links-inline">
+                      <a
+                        href="https://vendor.tgestravel.com/login"
+                        className="contact-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Vendor Portal"
+                      >
+                        🔗 Vendor
+                      </a>
+                      <a
+                        href="https://admin.tgestravel.com/login"
+                        className="contact-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Admin Portal"
+                      >
+                        🔗 Admin
+                      </a>
+                    </div>
                   </div>
                   <div className="job-date">May 2025 - Present</div>
                   <div className="job-description">
@@ -264,7 +301,7 @@ export default function Home() {
                       <span className="bullet-dot">•</span>
                       <span>
                         Developed vendor & admin panels with React Router v7,
-                        Redux Toolkit for invoice generation
+                        Redux Saga & Toolkit  for invoice generation
                       </span>
                     </li>
                     <li className="bullet-item">
@@ -282,8 +319,21 @@ export default function Home() {
                 {/* Job 3 */}
                 <div className="resume-item">
                   <div className="job-title">worked as - Full-Stack Developer</div>
-                  <div className="company-name">
-                    AshaLearnlogy - EdTech Platform
+                  <div className="company-name-with-link">
+                    <div className="company-name">
+                      AshaLearnlogy - EdTech Platform
+                    </div>
+                    <div className="project-link-inline">
+                      <a
+                        href="https://ashalearnology.vercel.app/"
+                        className="contact-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Visit AshaLearnlogy Platform"
+                      >
+                        🔗 Live Demo
+                      </a>
+                    </div>
                   </div>
                   <div className="job-date">Mar 2025 - May 2025</div>
                   <div className="job-description">
@@ -327,8 +377,21 @@ export default function Home() {
                   <div className="job-title">
                     worked as - Frontend Developer (Freelance)
                   </div>
-                  <div className="company-name">
-                    Kratikal Cybersecurity Website
+                  <div className="company-name-with-link">
+                    <div className="company-name">
+                      Adiroha - Cybersecurity Website
+                    </div>
+                    <div className="project-link-inline">
+                      <a
+                        href="https://adiroha.vercel.app/"
+                        className="contact-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Visit Adiroha Website"
+                      >
+                        🔗 Live Demo
+                      </a>
+                    </div>
                   </div>
                   <div className="job-date">Sep 2025 - Oct 2025</div>
                   <div className="job-description">
@@ -375,7 +438,7 @@ export default function Home() {
                   <div className="skill-category">
                     <div className="skill-category-title">Frontend</div>
                     <div className="skill-list">
-                      HTML, CSS, JavaScript, React JS, Redux, Next JS, Tailwind
+                      HTML, CSS, JavaScript, React.js, Vite.js, Redux, Next.js, Tailwind
                       CSS, Material UI, Bootstrap
                     </div>
                   </div>
@@ -410,7 +473,7 @@ export default function Home() {
                   <div className="skill-category">
                     <div className="skill-category-title">Tools</div>
                     <div className="skill-list">
-                      Git, GitHub, VS Code, Postman, Compass, Vercel
+                      Git, GitHub, VS Code, Postman, Vercel
                     </div>
                   </div>
                 </div>
