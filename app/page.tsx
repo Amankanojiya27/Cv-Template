@@ -93,7 +93,8 @@ export default function Home() {
           <div className="mobile-popup">
             <div className="mobile-popup-content">
               <h3>Better Experience Available!</h3>
-              <p>This resume is optimized for desktop viewing. Choose an option:</p>
+              <p>This resume is optimized for Desktop viewing.
+                <br /> Choose an option:</p>
               <div className="mobile-popup-buttons">
                 <button
                   onClick={() => setShowMobilePopup(false)}
