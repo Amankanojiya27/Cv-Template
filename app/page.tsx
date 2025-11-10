@@ -282,7 +282,7 @@ export default function Home() {
               </div>
               <div className="section-content">
                 <div className="resume-item">
-                  <div className="company-name">Asha Tech (AshaLearnlogy)</div>
+                  <div className="company-name">Asha Tech (Asha Learnology)</div>
                   <div className="job-title">Full-Stack Developer - Full Time</div>
                   <div className="job-date">Feb 2025 - Present</div>
                   <div className="job-description">
@@ -428,7 +428,7 @@ export default function Home() {
                   <div className="job-title">worked as - Full-Stack Developer</div>
                   <div className="company-name-with-link">
                     <div className="company-name">
-                      AshaLearnlogy - EdTech Platform
+                      Asha Learnology - EdTech Platform
                     </div>
                     <div className="project-link-inline">
                       <a
@@ -436,7 +436,7 @@ export default function Home() {
                         className="contact-link"
                         target="_blank"
                         rel="noopener noreferrer"
-                        title="Visit AshaLearnlogy Platform"
+                        title="Visit Asha Learnology Platform"
                       >
                         🔗 Live Demo
                       </a>
