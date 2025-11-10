@@ -348,7 +348,7 @@ export default function Home() {
                       <span className="bullet-dot">•</span>
                       <span>
                         Optimized performance with SSR, Redux Saga, and CDN
-                        integration, achieving 95+ Lighthouse scores
+                        integration for enhanced user experience
                       </span>
                     </li>
                   </ul>
