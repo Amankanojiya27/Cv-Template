@@ -557,7 +557,7 @@ export default function Home() {
                   <div className="skill-category">
                     <div className="skill-category-title">Backend</div>
                     <div className="skill-list">
-                      Node JS, Express JS, MongoDB, Firebase, Cloudinary, JWT,
+                      Node JS, Express JS, MongoDB, Cloudinary,
                       Bcrypt, Nodemailer
                     </div>
                   </div>
@@ -593,13 +593,13 @@ export default function Home() {
                 <div className="section-title">Education</div>
               </div>
               <div className="section-content">
-                <div className="education-item">
+                {/* <div className="education-item">
                   <div className="education-degree">
                     Bachelor of Computer Applications (BCA)
                   </div>
                   <div className="education-school">IGNOU, Delhi</div>
                   <div className="education-date">Pursuing</div>
-                </div>
+                </div> */}
                 <div className="education-item">
                   <div className="education-degree">
                     Bachelor of Political Science (Hons.)
