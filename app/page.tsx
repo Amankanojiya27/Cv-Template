@@ -300,7 +300,7 @@ export default function Home() {
               <div className="section-content">
                 {/* Job 1 */}
                 <div className="resume-item">
-                  <div className="job-title">worked as - Full-Stack Developer</div>
+                  <div className="job-title">Full-Stack</div>
                   <div className="company-name-with-link">
                     <div className="company-name">
                       SoWhot - Shopify E-commerce Platform
@@ -358,7 +358,7 @@ export default function Home() {
 
                 {/* Job 2 */}
                 <div className="resume-item">
-                  <div className="job-title">worked as - Full-Stack Developer</div>
+                  <div className="job-title">Full-Stack</div>
                   <div className="company-name-with-link">
                     <div className="company-name">
                       TGES Travel & Transport Management
@@ -425,7 +425,7 @@ export default function Home() {
 
                 {/* Job 3 */}
                 <div className="resume-item">
-                  <div className="job-title">worked as - Full-Stack Developer</div>
+                  <div className="job-title">Full-Stack</div>
                   <div className="company-name-with-link">
                     <div className="company-name">
                       Asha Learnology - EdTech Platform
@@ -482,7 +482,7 @@ export default function Home() {
                 {/* Job 4 */}
                 <div className="resume-item">
                   <div className="job-title">
-                    worked as - Frontend Developer (Freelance)
+                    Frontend Developer (Freelance)
                   </div>
                   <div className="company-name-with-link">
                     <div className="company-name">
@@ -599,6 +599,14 @@ export default function Home() {
                   </div>
                   <div className="education-school">IGNOU, Delhi</div>
                   <div className="education-date">Pursuing</div>
+                </div>
+                <div className="education-item">
+                  <div className="education-degree">
+                    Bachelor of Political Science (Hons.)
+                    {/* Bachelor of Computer Applications (BCA) */}
+                  </div>
+                  <div className="education-school">DU Sol, Delhi</div>
+                  <div className="education-date">Last Semester</div>
                 </div>
 
                 <div className="item-separator"></div>
