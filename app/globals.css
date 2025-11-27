@@ -504,6 +504,8 @@ body {
     padding: 0 !important;
     background: white !important;
     overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
   
   .resume-page-wrapper {
@@ -523,25 +525,26 @@ body {
     box-shadow: none !important;
   }
   
+  /* --- MINIMAL SPACING REDUCTION --- */
+  .resume-header {
+    margin-bottom: 12px !important;
+    padding-bottom: 10px !important;
+    break-inside: avoid;
+  }
+  
   .resume-columns {
-    column-gap: 8px;
+    column-gap: 8px !important;
     width: 100% !important;
   }
   
   .section-container {
-    break-inside: avoid;
-    margin-bottom: 6px;
-  }
-  
-  .resume-item {
+    margin-bottom: 10px !important;
     break-inside: avoid;
   }
   
   .item-separator {
-    margin: 2px 10px;
+    margin: 2px 8px !important;
   }
-  
-  /* Remove scrollbars */
   ::-webkit-scrollbar {
     display: none !important;
   }
