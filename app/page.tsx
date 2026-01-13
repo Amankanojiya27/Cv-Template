@@ -593,21 +593,20 @@ export default function Home() {
                 <div className="section-title">Education</div>
               </div>
               <div className="section-content">
-                {/* <div className="education-item">
+                <div className="education-item">
                   <div className="education-degree">
                     Bachelor of Computer Applications (BCA)
                   </div>
                   <div className="education-school">IGNOU, Delhi</div>
                   <div className="education-date">Pursuing</div>
-                </div> */}
-                <div className="education-item">
+                </div>
+                {/* <div className="education-item">
                   <div className="education-degree">
                     Bachelor of Political Science (Hons.)
-                    {/* Bachelor of Computer Applications (BCA) */}
                   </div>
                   <div className="education-school">DU Sol, Delhi</div>
                   <div className="education-date">Last Semester</div>
-                </div>
+                </div> */}
 
                 <div className="item-separator"></div>
 
