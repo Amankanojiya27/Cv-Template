@@ -469,6 +469,14 @@ body {
   box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
 }
 
+.download-btn:disabled,
+.mobile-popup-btn:disabled {
+  cursor: wait;
+  opacity: 0.75;
+  transform: none;
+  box-shadow: none;
+}
+
 .docx-btn {
   background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
@@ -697,6 +705,10 @@ body {
 .download-btn-mobile:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.mobile-popup-btn.docx-btn {
+  color: white;
 }
 
 .view-anyway-btn {
