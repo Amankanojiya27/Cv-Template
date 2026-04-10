@@ -3,24 +3,39 @@ import {
   Image as PdfImage,
   Link,
   Page,
+  Path,
   StyleSheet,
+  Svg,
   Text,
   View,
 } from "@react-pdf/renderer";
+import { getDynamicExperienceDescription } from "./resume-experience";
 
 type ResumePdfDocumentProps = {
   photoSrc?: string;
 };
 
+type PdfContactItem = {
+  label: string;
+  value: string;
+  iconPath?: string;
+  iconText?: string;
+  url?: string;
+};
+
+const profileLinkIconPath =
+  "M15 7h3a5 5 0 010 10h-3v-2h3a3 3 0 100-6h-3V7zM9 17H6A5 5 0 016 7h3v2H6a3 3 0 000 6h3v2zm-2-6h10v2H7v-2z";
+
 const summary =
   "Full-stack developer who turns business workflows into web products people can actually use. I build React and Next.js frontends with Node.js, Express, MongoDB, and TypeScript backends for operations platforms, Shopify storefronts, and AI products, with a strong focus on APIs, auth, dashboards, integrations, documents, and reducing manual work for clients.";
 
 const currentEmployment = {
-  company: "Asha Tech (Asha Learnology)",
   title: "Full-Stack Developer - Full Time",
-  date: "March 2025 - Present",
-  description:
-    "Successfully completed 6-month internship and transitioned to full-time Full-Stack Developer.",
+  company: "Asha Tech (Asha Learnology)",
+  date: "03/2025",
+  location: "Delhi, India",
+  companyDescription: "A company focused on education and technology solutions",
+  bullets: [getDynamicExperienceDescription()],
 };
 
 const projects = [
@@ -40,8 +55,8 @@ const projects = [
     ],
   },
   {
-    name: "So Whot Shopify Storefront",
-    links: [{ label: "Storefront", url: "https://sowhot.in" }],
+    name: "Sowhot",
+    links: [{ label: "Live App", url: "https://sowhot.in" }],
     description:
       "Built a headless Shopify storefront so the client could control the shopping experience beyond a standard Shopify theme, especially around discovery, reviews, cart flows, and checkout behavior.",
     bullets: [
@@ -122,25 +137,47 @@ const strengths = [
   },
 ];
 
-const contactItems = [
-  { label: "Phone", value: "8799791143" },
-  { label: "Email", value: "amankanojiya.dev@gmail.com" },
+const contactItems: PdfContactItem[] = [
+  {
+    label: "Phone",
+    value: "8799791143",
+    iconPath:
+      "M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z",
+    url: "tel:8799791143",
+  },
+  {
+    label: "Email",
+    value: "amankanojiya.dev@gmail.com",
+    iconText: "@",
+    url: "mailto:amankanojiya.dev@gmail.com",
+  },
+  {
+    label: "Location",
+    value: "Saket, Delhi, India",
+    iconPath:
+      "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z",
+  },
+];
+
+const profileContactItems: PdfContactItem[] = [
   {
     label: "LinkedIn",
-    value: "linkedin.com/in/Amankanojiya27",
+    value: "linkedin",
+    iconPath: profileLinkIconPath,
     url: "http://www.linkedin.com/in/Amankanojiya27",
   },
   {
     label: "GitHub",
-    value: "github.com/Amankanojiya27",
+    value: "github",
+    iconPath: profileLinkIconPath,
     url: "https://github.com/Amankanojiya27",
   },
   {
     label: "Portfolio",
-    value: "amankanojiya27.vercel.app",
+    value: "Portfolio",
+    iconPath: profileLinkIconPath,
     url: "https://amankanojiya27.vercel.app/",
   },
-  { label: "Location", value: "Saket, Delhi, India" },
 ];
 
 const styles = StyleSheet.create({
@@ -182,14 +219,43 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   contactItem: {
+    flexDirection: "row",
+    alignItems: "center",
     marginRight: 10,
     marginBottom: 3,
+  },
+  contactIcon: {
+    width: 8,
+    height: 8,
+    marginRight: 4,
+    flexShrink: 0,
+  },
+  contactSymbol: {
+    marginRight: 4,
+    color: "#008cff",
+    fontSize: 8.6,
+    fontWeight: 700,
+    lineHeight: 1,
+  },
+  contactText: {
     fontSize: 8.1,
     lineHeight: 1.25,
+    color: "#111111",
   },
   contactLink: {
     color: "#111111",
     textDecoration: "none",
+    fontSize: 8.1,
+    lineHeight: 1.25,
+  },
+  profileLinksGroup: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+  },
+  profileLinkSegment: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   photo: {
     width: 74,
@@ -349,15 +415,37 @@ export default function ResumePdfDocument({
             <View style={styles.contactWrap}>
               {contactItems.map((item) => (
                 <View key={`${item.label}-${item.value}`} style={styles.contactItem}>
+                  {item.iconText ? (
+                    <Text style={styles.contactSymbol}>{item.iconText}</Text>
+                  ) : (
+                    <Svg viewBox="0 0 24 24" style={styles.contactIcon}>
+                      <Path d={item.iconPath ?? ""} fill="#008cff" />
+                    </Svg>
+                  )}
                   {item.url ? (
                     <Link src={item.url} style={styles.contactLink}>
-                      {`${item.label}: ${item.value}`}
+                      {item.value}
                     </Link>
                   ) : (
-                    <Text>{`${item.label}: ${item.value}`}</Text>
+                    <Text style={styles.contactText}>{item.value}</Text>
                   )}
                 </View>
               ))}
+              <View style={styles.contactItem}>
+                <Svg viewBox="0 0 24 24" style={styles.contactIcon}>
+                  <Path d={profileLinkIconPath} fill="#008cff" />
+                </Svg>
+                <View style={styles.profileLinksGroup}>
+                  {profileContactItems.map((item, index) => (
+                    <View key={item.label} style={styles.profileLinkSegment}>
+                      {index > 0 ? <Text style={styles.contactText}>, </Text> : null}
+                      <Link src={item.url ?? ""} style={styles.contactLink}>
+                        {item.value}
+                      </Link>
+                    </View>
+                  ))}
+                </View>
+              </View>
             </View>
           </View>
           {photoSrc ? <PdfImage src={photoSrc} style={styles.photo} /> : null}
@@ -371,14 +459,23 @@ export default function ResumePdfDocument({
             </View>
 
             <View style={styles.section} wrap={false}>
-              <Text style={styles.sectionTitle}>Current Employment</Text>
+              <Text style={styles.sectionTitle}>Experience</Text>
               <View style={styles.itemBlock}>
-                <Text style={styles.companyName}>{currentEmployment.company}</Text>
                 <Text style={styles.jobTitle}>{currentEmployment.title}</Text>
+                <Text style={styles.companyName}>{currentEmployment.company}</Text>
                 <Text style={styles.jobDate}>{currentEmployment.date}</Text>
+                <Text style={styles.jobDate}>{currentEmployment.location}</Text>
                 <Text style={styles.description}>
-                  {currentEmployment.description}
+                  {currentEmployment.companyDescription}
                 </Text>
+                <View style={styles.bulletList}>
+                  {currentEmployment.bullets.map((bullet) => (
+                    <View key={bullet} style={styles.bulletRow}>
+                      <Text style={styles.bullet}>-</Text>
+                      <Text style={styles.bulletText}>{bullet}</Text>
+                    </View>
+                  ))}
+                </View>
               </View>
             </View>
 
