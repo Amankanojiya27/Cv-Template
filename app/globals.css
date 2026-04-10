@@ -114,6 +114,15 @@ body {
   margin-right: 6px;
 }
 
+.contact-symbol-icon {
+  color: rgb(0, 140, 255);
+  font-family: 'Rubik', Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
 .contact-text {
   font-family: 'Inter', Arial, Helvetica, sans-serif;
   font-size: 12px;
@@ -222,7 +231,22 @@ body {
   margin-top: 1px;
 }
 
+.job-location {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 13px;
+  color: #666;
+  margin-top: 1px;
+}
+
 .job-description {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 13px;
+  margin-top: 2px;
+}
+
+.company-description {
   font-family: 'Inter', Arial, Helvetica, sans-serif;
   font-size: 11px;
   line-height: 13px;
