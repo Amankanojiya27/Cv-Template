@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { getDynamicExperienceDescription } from "./resume-experience";
 
 type ResumeLink = {
   label: string;
@@ -14,10 +15,12 @@ type ResumeContact = {
 };
 
 type ResumeEmployment = {
-  company: string;
   title: string;
+  company: string;
   date: string;
-  description: string;
+  location: string;
+  companyDescription: string;
+  bullets: string[];
 };
 
 type ResumeProject = {
@@ -118,20 +121,26 @@ const extractResumeDocData = (
       ".contact-info-single-line .contact-item",
     ),
   )
-    .map((item): ResumeContact | null => {
-      const anchor = item.querySelector<HTMLAnchorElement>("a");
+    .flatMap((item): ResumeContact[] => {
+      const anchors = Array.from(item.querySelectorAll<HTMLAnchorElement>("a"));
 
-      if (anchor) {
-        const href = anchor.href || anchor.getAttribute("href") || "";
+      if (anchors.length > 0) {
+        return anchors
+          .map((anchor): ResumeContact | null => {
+            const href = anchor.href || anchor.getAttribute("href") || "";
+            const text =
+              normalizeText(anchor.textContent) || normalizeText(anchor.href);
 
-        if (!href) {
-          return null;
-        }
+            if (!href || !text) {
+              return null;
+            }
 
-        return {
-          text: formatDocUrl(href),
-          url: href,
-        };
+            return {
+              text,
+              url: href,
+            };
+          })
+          .filter((contact): contact is ResumeContact => contact !== null);
       }
 
       const text = normalizeText(
@@ -139,34 +148,27 @@ const extractResumeDocData = (
       );
 
       if (!text) {
-        return null;
+        return [];
       }
 
       if (text.includes("@")) {
-        return {
-          text,
-          url: `mailto:${text}`,
-        };
+        return [{ text, url: `mailto:${text}` }];
       }
 
       const digits = text.replace(/[^\d+]/g, "");
 
       if (/^\+?\d{10,}$/.test(digits)) {
-        return {
-          text,
-          url: `tel:${digits}`,
-        };
+        return [{ text, url: `tel:${digits}` }];
       }
 
-      return { text };
-    })
-    .filter((item): item is ResumeContact => item !== null);
+      return [{ text }];
+    });
 
   const summarySection = getSectionByTitle(resumeElement, "Summary");
   const currentEmploymentSection = getSectionByTitle(
     resumeElement,
-    "Current Employment",
-  );
+    "Experience",
+  ) ?? getSectionByTitle(resumeElement, "Current Employment");
   const projectsSection = getSectionByTitle(resumeElement, "Projects");
   const skillsSection = getSectionByTitle(resumeElement, "Technical Skills");
   const educationSection = getSectionByTitle(resumeElement, "Education");
@@ -181,18 +183,30 @@ const extractResumeDocData = (
 
   const currentEmployment = currentEmploymentItem
     ? {
-        company: normalizeText(
-          currentEmploymentItem.querySelector(".company-name")?.textContent,
-        ),
         title: normalizeText(
           currentEmploymentItem.querySelector(".job-title")?.textContent,
+        ),
+        company: normalizeText(
+          currentEmploymentItem.querySelector(".company-name")?.textContent,
         ),
         date: normalizeText(
           currentEmploymentItem.querySelector(".job-date")?.textContent,
         ),
-        description: normalizeText(
-          currentEmploymentItem.querySelector(".job-description")?.textContent,
+        location: normalizeText(
+          currentEmploymentItem.querySelector(".job-location")?.textContent,
         ),
+        companyDescription: normalizeText(
+          currentEmploymentItem.querySelector(".company-description")?.textContent,
+        ),
+        bullets: Array.from(
+          currentEmploymentItem.querySelectorAll<HTMLElement>(".bullet-item"),
+        )
+          .map((bulletItem) =>
+            normalizeText(
+              bulletItem.lastElementChild?.textContent ?? bulletItem.textContent,
+            ),
+          )
+          .filter(Boolean),
       }
     : null;
 
@@ -439,7 +453,11 @@ const createDocxBlob = async (resumeData: ResumeDocData) => {
       }),
     );
     profileLinkChildren.push(
-      createLinkChild(formatDocUrl(contact.url), contact.url, metaSize),
+      createLinkChild(
+        contact.text || formatDocUrl(contact.url),
+        contact.url,
+        metaSize,
+      ),
     );
   });
 
@@ -470,10 +488,10 @@ const createDocxBlob = async (resumeData: ResumeDocData) => {
       : []),
     createSectionTitle("Summary"),
     createTextParagraph(resumeData.summary),
-    createSectionTitle("Current Employment"),
+    createSectionTitle("Experience"),
     createCompactParagraph(
       [
-        createRun(resumeData.currentEmployment.company, {
+        createRun(resumeData.currentEmployment.title, {
           bold: true,
           size: bodySize,
         }),
@@ -482,19 +500,36 @@ const createDocxBlob = async (resumeData: ResumeDocData) => {
     ),
     createCompactParagraph(
       [
-        createRun(resumeData.currentEmployment.title, {
+        createRun(resumeData.currentEmployment.company, {
           bold: true,
           size: bodySize,
+          color: "0B57D0",
         }),
-        createRun(" | ", { size: metaSize }),
+      ],
+      2,
+    ),
+    createCompactParagraph(
+      [
         createRun(resumeData.currentEmployment.date, {
           size: metaSize,
           color: "666666",
         }),
       ],
-      6,
+      2,
     ),
-    createTextParagraph(resumeData.currentEmployment.description),
+    createCompactParagraph(
+      [
+        createRun(resumeData.currentEmployment.location, {
+          size: metaSize,
+          color: "666666",
+        }),
+      ],
+      4,
+    ),
+    createTextParagraph(resumeData.currentEmployment.companyDescription),
+    ...resumeData.currentEmployment.bullets.map((bullet) =>
+      createBulletParagraph(bullet),
+    ),
     createSectionTitle("Projects"),
   ];
 
@@ -641,6 +676,9 @@ export default function Home() {
   );
   const resumeRef = useRef<HTMLDivElement>(null);
   const fileBaseName = "aman-kanojiya-resume";
+  const currentExperienceDescription = getDynamicExperienceDescription();
+  const profileLinkIconPath =
+    "M15 7h3a5 5 0 010 10h-3v-2h3a3 3 0 100-6h-3V7zM9 17H6A5 5 0 016 7h3v2H6a3 3 0 000 6h3v2zm-2-6h10v2H7v-2z";
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -936,32 +974,24 @@ export default function Home() {
                 >
                   <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
                 </svg>
-                <span className="contact-text">8799791143</span>
-              </div>
-              <div className="contact-item">
-                <svg
-                  className="contact-icon"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                </svg>
-                <span className="contact-text">amankanojiya.dev@gmail.com</span>
-              </div>
-              <div className="contact-item">
-                <svg
-                  className="contact-icon"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                </svg>
                 <a
-                  href="http://www.linkedin.com/in/Amankanojiya27"
+                  href="tel:8799791143"
                   className="contact-link contact-text"
-                  title="LinkedIn Profile"
+                  title="Call 8799791143"
                 >
-                  linkedin
+                  8799791143
+                </a>
+              </div>
+              <div className="contact-item">
+                <span className="contact-symbol-icon" aria-hidden="true">
+                  @
+                </span>
+                <a
+                  href="mailto:amankanojiya.dev@gmail.com"
+                  className="contact-link contact-text"
+                  title="Email amankanojiya.dev@gmail.com"
+                >
+                  amankanojiya.dev@gmail.com
                 </a>
               </div>
               <div className="contact-item">
@@ -970,33 +1000,35 @@ export default function Home() {
                   viewBox="0 0 24 24"
                   fill="currentColor"
                 >
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.30.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                  <path d={profileLinkIconPath} />
                 </svg>
-                <a
-                  href="https://github.com/Amankanojiya27"
-                  className="contact-link contact-text"
-                  title="GitHub Profile"
-                >
-                  github
-                </a>
-              </div>
-              <div className="contact-item">
-                <svg
-                  className="contact-icon"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                </svg>
-                <a
-                  href="https://amankanojiya27.vercel.app/"
-                  className="contact-link contact-text"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Portfolio Website"
-                >
-                  Portfolio
-                </a>
+                <span className="contact-text">
+                  <a
+                    href="http://www.linkedin.com/in/Amankanojiya27"
+                    className="contact-link"
+                    title="LinkedIn Profile"
+                  >
+                    linkedin
+                  </a>
+                  {", "}
+                  <a
+                    href="https://github.com/Amankanojiya27"
+                    className="contact-link"
+                    title="GitHub Profile"
+                  >
+                    github
+                  </a>
+                  {", "}
+                  <a
+                    href="https://amankanojiya27.vercel.app/"
+                    className="contact-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Portfolio Website"
+                  >
+                    Portfolio
+                  </a>
+                </span>
               </div>
               <div className="contact-item">
                 <svg
@@ -1041,24 +1073,28 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Current Employment Section */}
+            {/* Experience Section */}
             <div className="section-container">
               <div className="section-header">
-                <div className="section-title">Current Employment</div>
+                <div className="section-title">Experience</div>
               </div>
               <div className="section-content">
                 <div className="resume-item">
-                  <div className="company-name">
-                    Asha Tech (Asha Learnology)
-                  </div>
                   <div className="job-title">
                     Full-Stack Developer - Full Time
                   </div>
-                  <div className="job-date">March 2025 - Present</div>
-                  <div className="job-description">
-                    Successfully completed 6-month internship and transitioned
-                    to full-time Full-Stack Developer.
+                  <div className="company-name">Asha Tech (Asha Learnology)</div>
+                  <div className="job-date">03/2025</div>
+                  <div className="job-location">Delhi, India</div>
+                  <div className="company-description">
+                    A company focused on education and technology solutions
                   </div>
+                  <ul className="bullet-list">
+                    <li className="bullet-item">
+                      <span className="bullet-dot">-</span>
+                      <span>{currentExperienceDescription}</span>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -1146,7 +1182,7 @@ export default function Home() {
                 <div className="resume-item">
                   <div className="company-name-with-link">
                     <div className="company-name">
-                      So Whot Shopify Storefront
+                      Sowhot
                     </div>
                     <div className="project-link-inline">
                       <a
@@ -1156,7 +1192,7 @@ export default function Home() {
                         rel="noopener noreferrer"
                         title="Visit So Whot Website"
                       >
-                        Storefront
+                        Live App 
                       </a>
                     </div>
                   </div>
